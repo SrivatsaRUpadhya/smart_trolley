@@ -17,7 +17,8 @@ const setLocalStorage = (data) => {
 }
 
 export default function Newregistrationcomponent({ props }) {
-
+    
+    const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
     const [contact, setContact] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -35,7 +36,7 @@ export default function Newregistrationcomponent({ props }) {
         setMessage('loading...');
 
         try {
-            const data = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/signup`, { contact, password, email, username });
+            const data = await axios.post(`${serverUrl}/api/signup`, { contact, password, email, username });
             if (data.status === 201) {
                 setMsgColor(msgColors.success);
                 setMessage(data.data.data);

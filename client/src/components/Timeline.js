@@ -6,11 +6,12 @@ import PreviousBillsTable from "./PreviousBillsTable";
 export default function Timelinecomponent() {
     const [billItems, SetBills] = useState([]);
     const contact = localStorage.getItem('contact');
+    const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
 
     useEffect(() => {
         axios({
             method: 'get',
-            url: `${process.env.REACT_APP_SERVER_URL}/api/previousBills`,
+            url: `${serverUrl}/api/previousBills`,
             params: { contact }
         })
             .then(data => {

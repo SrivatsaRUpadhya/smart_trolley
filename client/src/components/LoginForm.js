@@ -19,7 +19,7 @@ export default function LoginForm({ props }) {
     const [ShowLoading, setShowLoading] = useState(false);
     props.setShowComponents(false);
 
-
+    const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
     const setLocalStorage = (data) => {
         for (const key in data) {
             window.localStorage.setItem(key, data[key]);
@@ -30,7 +30,7 @@ export default function LoginForm({ props }) {
         setDisabled(true);
         setShowLoading(true);
         try {
-            const data = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/signin`, { contact, password });
+            const data = await axios.post(`${serverUrl}/api/signin`, { contact, password });
             if (data.status === 200) {
                 setLocalStorage(data.data.userInfo);
                 setPassword('');

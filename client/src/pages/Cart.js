@@ -1,13 +1,12 @@
 import { Button, DarkThemeToggle, } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import BillComponent from "../components/Bill";
-import FooterComponent from "../components/Footer";
-import Alertcomponent from "../components/Alert";
 import io from 'socket.io-client';
 import QRScannerComponent from "../components/QRScanner";
-import axios from "axios";
-const socket = io(`${process.env.REACT_APP_SERVER_URL}`);
+
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
+
+const socket = io(`${serverUrl}`);
 
 const msgColors = {
     success: 'text-green-400',

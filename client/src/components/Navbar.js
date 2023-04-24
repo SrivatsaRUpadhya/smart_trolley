@@ -28,7 +28,7 @@ export default function NavbarComponent(props) {
                     className="bg-inherit"
                    
                 >
-                    <Navbar.Brand href="#">
+                    <Navbar.Brand href="/landingPage">
                         <img
                             src="./Images/logo.png"
                             className="mr-3 h-6 sm:h-9"
@@ -70,7 +70,7 @@ export default function NavbarComponent(props) {
 
                     <Navbar.Collapse>
                     <Navbar.Link
-                            href="/about"
+                            href="/landingPage"
                             className="text-black font-bold">
                             Home
                             </Navbar.Link>

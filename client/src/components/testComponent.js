@@ -3,7 +3,7 @@ import { Button } from "flowbite-react";
 import axios from 'axios';
 
 export default function TestComponent() {
-
+    const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
     const [barcode, setBarcode] = useState('')
     const [productCode, setProductCode] = useState('')
 
@@ -11,7 +11,7 @@ export default function TestComponent() {
 
     function submit_form(e) {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_SERVER_URL}/api/addProduct`, { productCode, productID: barcode, cartID:contact })
+        axios.post(`${serverUrl}/api/addProduct`, { productCode, productID: barcode, cartID:contact })
     }
 
     return (

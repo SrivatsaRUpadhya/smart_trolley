@@ -7,7 +7,7 @@ import Timelinecomponent from "../components/Timeline";
 export default function Previouscomponent() {
   return (
     <>
-      <div>
+      <div className="min-h-screen">
         <Timelinecomponent />
       </div>
     </>

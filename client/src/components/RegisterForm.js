@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000';
+
 const msgColors = {
     success: 'text-green-400',
     info: 'text-blue-400',
@@ -30,7 +32,7 @@ export default function RegisterForm() {
         setMessage('loading...');
 
         try {
-            const data = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/signup`,{ contact, password, email, username});
+            const data = await axios.post(`${serverUrl}/api/signup`,{ contact, password, email, username});
             if(data.status === 201) {
                 setMsgColor(msgColors.success);
                 setMessage(data.data.data);
