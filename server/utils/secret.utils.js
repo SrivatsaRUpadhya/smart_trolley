@@ -7,7 +7,8 @@ const secrets = {
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
     jwt_key: process.env.JWT_KEY,
-    jwt_expire: process.env.JWT_EXPIRE
+    jwt_expire: process.env.JWT_EXPIRE,
+    db_url: process.env.DATABASE_URL,
 };
 
 module.exports = {

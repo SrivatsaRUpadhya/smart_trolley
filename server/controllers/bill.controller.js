@@ -24,7 +24,7 @@ async function socket(io) {
                 if (bill.items.length !== 0) {
                     const { bill } = billContainer.get(data.cartID);
                     await bill.init(data.contact);
-                    console.log(bill.transaction_id);
+                    // console.log(bill.transaction_id);
                     const res = await bill.checkoutBill();
                     if (res) {
                         billContainer.delete(data.cartID);

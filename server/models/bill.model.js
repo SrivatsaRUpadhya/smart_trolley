@@ -4,7 +4,7 @@ const sql_generate = (transaction_id, contact, items) => {
     const prefix = `INSERT INTO all_bills (Bill_No,Phone,Product_ID,Product_Name,Cost,Quantity)VALUES`;
     const sql_insert = items
         .map(({ Product_Name, Cost, Product_ID, Quantity }) => {
-            return `(${transaction_id},'${contact}',${Product_ID},'${Product_Name}',${Cost}, ${Quantity})`;
+            return `('${transaction_id}','${contact}','${Product_ID}','${Product_Name}',${Cost}, ${Quantity})`;
         })
         .join(',') + ';';
     return prefix + sql_insert;

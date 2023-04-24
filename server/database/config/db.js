@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
-const { host, user, database, password } = require('../../utils/secret.utils');
+const { host, user, database, password, db_url } = require('../../utils/secret.utils');
 
-const pool = mysql.createPool({ host, user, database, password }).promise();
+const pool = mysql.createPool(db_url || { host, user, database, password }).promise();
 
 module.exports = pool;

@@ -1,12 +1,13 @@
 CREATE TABLE all_bills (
-  Sl_No INT PRIMARY KEY AUTO_INCREMENT
-  Contact_Number INT NOT NULL,
+  Sl_No INT PRIMARY KEY AUTO_INCREMENT,
+  Bill_No VARCHAR(50) NOT NULL,
+  Phone INT NOT NULL,
   Bill_Date DATE NOT NULL,
-  Product_ID INT NOT NULL,
+  Product_ID VARCHAR(100) NOT NULL,
   Product_Name VARCHAR(100) NOT NULL,
   Cost INT NOT NULL,
   Quantity INT NOT NULL DEFAULT 1,
-  Amount INT NOT NULL
+  Amount FLOAT AS (Cost * Quantity) NOT NULL 
 )
 
 CREATE TABLE all_products (
