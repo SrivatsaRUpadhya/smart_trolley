@@ -56,6 +56,7 @@ const updateBill = (cartID) => {
 
 const addProduct = async (req, res) => {
     const { cartID, barcode, productCode } = req.body;
+    // console.log(req.body);
     var bill = {};
     if (billContainer.has(cartID)) {
         bill = billContainer.get(cartID).bill;

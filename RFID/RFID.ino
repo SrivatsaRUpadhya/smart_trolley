@@ -1,35 +1,35 @@
-#include<WiFi.h>
-#include<WiFiClient.h>
+#include <WiFi.h>
+#include <WiFiClient.h>
 #include <WebServer.h>
 #include <HTTPClient.h>
 #include <SPI.h>
 #include <MFRC522.h>
 
 
-#define RST_PIN         22         // Configurable, see typical pin layout above
-#define SS_PIN          21         // Configurable, see typical pin layout above
+#define RST_PIN 22  // Configurable, see typical pin layout above
+#define SS_PIN 21   // Configurable, see typical pin layout above
 
-MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance
+MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance
 
 //ENTER YOUR WIFI SETTINGS
-const char *ssid = "Airtel_9880156393";  
+const char *ssid = "Airtel_9880156393";
 const char *password = "air01575";
-const char *host = "http://smart-trolley-server.onrender.com/api/addProduct"; 
+const char *host = "http://smart-trolley-server.onrender.com/api/addProduct/";
 WiFiClient wifiClient;
 
 
 
 void setup() {
-    delay(1000);  
-  Serial.begin(9600);
-  SPI.begin(); 
-  mfrc522.PCD_Init();
-  
-  WiFi.mode(WIFI_OFF);        //Prevents reconnection issue (taking too long to connect)
   delay(1000);
-  WiFi.mode(WIFI_STA);        //This line hides the viewing of ESP as wifi hotspot
-  
-  WiFi.begin(ssid, password);     //Connect to your WiFi router
+  Serial.begin(9600);
+  SPI.begin();
+  mfrc522.PCD_Init();
+
+  WiFi.mode(WIFI_OFF);  //Prevents reconnection issue (taking too long to connect)
+  delay(1000);
+  WiFi.mode(WIFI_STA);  //This line hides the viewing of ESP as wifi hotspot
+
+  WiFi.begin(ssid, password);  //Connect to your WiFi router
   Serial.println("");
 
   Serial.print("Connecting");
@@ -45,11 +45,11 @@ void setup() {
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());  //IP address assigned to your ESP
-  
 
-  HTTPClient http;    
-   mfrc522.PCD_Init();        // Init MFRC522 card
-   Serial.print("ready");
+
+  HTTPClient http;
+  mfrc522.PCD_Init();  // Init MFRC522 card
+  Serial.print("ready");
 }
 
 
@@ -68,12 +68,12 @@ void loop() {
   //-------------------------------------------
 
   // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
-  if ( ! mfrc522.PICC_IsNewCardPresent()) {
+  if (!mfrc522.PICC_IsNewCardPresent()) {
     return;
   }
 
   // Select one of the cards
-  if ( ! mfrc522.PICC_ReadCardSerial()) {
+  if (!mfrc522.PICC_ReadCardSerial()) {
     return;
   }
 
@@ -81,7 +81,7 @@ void loop() {
 
   //-------------------------------------------
 
-  mfrc522.PICC_DumpDetailsToSerial(&(mfrc522.uid)); //dump some details about the card
+  mfrc522.PICC_DumpDetailsToSerial(&(mfrc522.uid));  //dump some details about the card
 
   //mfrc522.PICC_DumpToSerial(&(mfrc522.uid));      //uncomment this to see all blocks in hex
 
@@ -96,7 +96,7 @@ void loop() {
   len = 100;
   block = 1;
 
-  status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &key, &(mfrc522.uid)); //line 834
+  status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &key, &(mfrc522.uid));  //line 834
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("Authentication failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
@@ -113,38 +113,39 @@ void loop() {
   //PRINT barcode
   for (uint8_t i = 0; i < 16; i++) {
     barcode += (char)buffer2[i];
-//    Serial.write(buffer2[i]);
+    //    Serial.write(buffer2[i]);
   }
   Serial.print(barcode);
   //----------------------------------------
-  
+
   Serial.println(F("\n**End Reading**\n"));
 
-  delay(500); //change value if you want to read cards faster
+  delay(500);  //change value if you want to read cards faster
 
   mfrc522.PICC_HaltA();
   mfrc522.PCD_StopCrypto1();
 
-//Post the data ie barcode and phone
+  //Post the data ie barcode and phone
   HTTPClient http;
-  String postData = "cartID=Cart_1&barcode="+barcode+"&productCode=123";
+   String postData = "{\"cartID\":\"Cart_1\",\"productCode\":\"123\",\"barcode\":\"" + barcode + "\"}";
+  // String postData = "cartID=Cart_1&barcode=" + barcode + "&productCode=123";
   Serial.print(postData);
-  
-  http.begin(wifiClient, host);              //Specify request destination
-  http.addHeader("Content-Type", "application/x-www-form-urlencoded");    //Specify content-type header
-  
-  int httpCode = http.POST(postData);   //Send the request
-  String payload = http.getString();    //Get the response payload
-    String code = String(httpCode);
-    while(code == ""){
+
+  http.begin(wifiClient, host);  //Specify request destination
+  http.addHeader("Content-Type", "application/json");  //Specify content-type header
+
+    int httpCode = http.POST(postData);  //Send the request
+  String payload = http.getString();     //Get the response payload
+  String code = String(httpCode);
+  while (code == "") {
     Serial.print(".");
   }
-  Serial.println(httpCode);   //Print HTTP return code
+  Serial.println(httpCode);  //Print HTTP return code
 
-  if(httpCode == 200){
+  if (httpCode == 200) {
     Serial.println("Product Added");
   }
-  Serial.println(payload);    //Print request response payload
+  Serial.println(payload);  //Print request response payload
 
   http.end();  //Close connection
   delay(200);

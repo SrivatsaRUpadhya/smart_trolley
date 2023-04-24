@@ -24,7 +24,7 @@ const { socket } = require('./controllers/bill.controller');
 socket(io);
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ type: "*/x-www-form-urlencoded" }));
 
 app.use(cors());
 app.use(cookieParser());
@@ -32,8 +32,8 @@ app.use(cookieParser());
 app.use(userRouter);
 app.use(billRouter);
 app.use(auth_token, adminRouter);
-app.get('/', (req,res)=>{
-    res.status(200).json({message:"success"})
+app.get('/', (req, res) => {
+    res.status(200).json({ message: "success" })
 })
 httpServer.listen(port, () => {
     console.log(`port ${port}`);
